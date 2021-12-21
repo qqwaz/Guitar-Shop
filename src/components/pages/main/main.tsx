@@ -1,11 +1,25 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../const';
+import { fetchCatalog } from '../../../store/api-actions';
+import { getCatalogSelector, getIsWaitingSelector } from '../../../store/main/selectors';
+import Waiting from '../../common/waiting/waiting';
 import Card from './card';
 import Filter from './filter';
 import Pagination from './pagination';
 import Sorting from './sorting';
 
 function Main() {
+  const dispatch = useDispatch();
+
+  const items = useSelector(getCatalogSelector);
+  const isWaiting = useSelector(getIsWaitingSelector);
+
+  useEffect(() => {
+    dispatch(fetchCatalog());
+  }, [dispatch]);
+
   return (
     <main className="page-content">
       <div className="container">
@@ -23,7 +37,9 @@ function Main() {
           <Sorting />
           <div className="cards catalog__cards">
 
-            {[...new Array(9)].map((_, i) => i).map((x) => <Card key={x} />)}
+            {isWaiting
+              ? <Waiting />
+              : items.map((item) => <Card key={item.id} item={item}/>)}
 
           </div>
           <Pagination />
