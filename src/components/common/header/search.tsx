@@ -1,19 +1,25 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AppRoute } from '../../../const';
 import { setNameAction } from '../../../store/actions';
 import { fetchCatalog } from '../../../store/api-actions';
-import { getCatalogSelector, getNameSelector } from '../../../store/main/selectors';
+import { getNameSelector, getSearchResultSelector } from '../../../store/main/selectors';
 
 function Search() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const name = useSelector(getNameSelector);
-  const items = useSelector(getCatalogSelector);
+  const items = useSelector(getSearchResultSelector);
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     dispatch(setNameAction(evt.target.value));
     dispatch(fetchCatalog());
+  };
+
+  const handleClick = (id: number) => (evt: SyntheticEvent) => {
+    evt.preventDefault();
+    history.push(AppRoute.Product.replace(':product_id', id.toString()));
   };
 
   return (
@@ -30,14 +36,12 @@ function Search() {
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul className={`form-search__select-list ${items.length && 'hidden'} `}>
+      <ul className={`form-search__select-list ${!items.length && 'hidden'} `} style={{zIndex: 1}}>
 
         {items.map((item) => (
-          <Link key={item.id} to={AppRoute.Product.replace(':product_id', item.id.toString())}>
-            <li className="form-search__select-item" tabIndex={0}>
-              {item.name}
-            </li>
-          </Link>
+          <li key={item.id} className="form-search__select-item" tabIndex={0} onClick={handleClick(item.id)}>
+            {item.name}
+          </li>
         ))}
 
 
