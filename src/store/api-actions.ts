@@ -1,18 +1,46 @@
-import { ApiMessage, APIRoute, QueryParam } from '../const';
+import { ApiMessage, APIRoute, AppRoute, QueryParam } from '../const';
+// import { NameSpace } from './root-reducer';
 import { GuitarType } from '../types/guitar-type';
 // import { ParamsType } from '../types/params-type';
-import { loadCatalogAction, ThunkActionResult, waitServer } from './actions';
+import {
+  loadCatalogAction,
+  loadProductAction,
+  loadSearchResultAction,
+  ThunkActionResult,
+  waitServerAction
+} from './actions';
 import { toast } from 'react-toastify';
-import { adaptGuitarsToClient } from '../services/adapter';
-import { NameSpace } from './root-reducer';
+import { adaptGuitarsToClient, adaptGuitarToClient } from '../services/adapter';
+import { SearchItemType } from '../types/search-item-type';
+import { apiRouteToProduct } from '../services/utils';
+import history from '../services/history';
 
+export const fetchSearchResultAction = (mask: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    if (mask === '') {
+      dispatch(loadSearchResultAction([]));
+      return;
+    }
+    try {
+      const params = {
+        [QueryParam.NameLike]: mask,
+      };
+      await api.get<GuitarType[]>(APIRoute.Guitars, {params: params})
+        .then(({ data }) => {
+          const items: SearchItemType[] = data.map((x) => ({id: x.id, name: x.name}));
+          dispatch(loadSearchResultAction(items));
+        });
+    } catch {
+      dispatch(loadSearchResultAction([]));
+      toast.error(ApiMessage.ServerError);
+    }
+  };
 
-export const fetchCatalog = (): ThunkActionResult =>
+export const fetchCatalogAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const state = _getState();
+      // const state = _getState();
       const params = {
-        [QueryParam.Name]: state[NameSpace.Main].name,
         // type: state[NameSpace.Main].type,
         // strings: state[NameSpace.Main].strings[0],
         // sorting: state[NameSpace.Main].sorting[0],
@@ -23,13 +51,29 @@ export const fetchCatalog = (): ThunkActionResult =>
 
       // eslint-disable-next-line no-console
       console.warn(params);
-      dispatch(waitServer(true));
+
+      dispatch(waitServerAction(true));
       const { data } = await api.get<GuitarType[]>(APIRoute.Guitars, {params: params});
       dispatch(loadCatalogAction(adaptGuitarsToClient(data)));
     } catch {
       dispatch(loadCatalogAction([]));
       toast.error(ApiMessage.ServerError);
     } finally {
-      dispatch(waitServer(false));
+      dispatch(waitServerAction(false));
     }
   };
+
+export const fetchProductAction = (id: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      dispatch(waitServerAction(true));
+      const { data } = await api.get<GuitarType>(apiRouteToProduct(id));
+      dispatch(loadProductAction(adaptGuitarToClient(data)));
+    } catch(e) {
+      toast.error(ApiMessage.ServerError + e);
+      history.push(AppRoute.NotFound);
+    } finally {
+      dispatch(waitServerAction(false));
+    }
+  };
+

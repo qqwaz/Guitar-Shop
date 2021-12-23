@@ -3,15 +3,15 @@ export const REQUEST_TIMEOUT = 3000;
 
 export enum AppRoute {
   Main = '/',
-  Product = '/product/:product_id',
+  Product = '/product/:id',
   Cart = '/cart',
   NotFound = '/oops',
 }
 
 export enum APIRoute {
   Guitars = '/guitars',
-  Product = '/guitars/:product_id',
-  Comments = '/guitars/:product_id/comments',
+  Product = '/guitars/:id',
+  Comments = '/guitars/:id/comments',
   Comment = '/comments',
   Coupon = '/coupons',
   Order = '/orders',
@@ -22,7 +22,7 @@ export enum ApiMessage {
 }
 
 export enum QueryParam {
-  Name = 'name_like',
+  NameLike = 'name_like',
   Type = 'type',
   Strings = 'stringCount',
   MinPrice = 'price_gte',

@@ -1,25 +1,31 @@
-import { ChangeEvent, SyntheticEvent } from 'react';
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppRoute } from '../../../const';
-import { setNameAction } from '../../../store/actions';
-import { fetchCatalog } from '../../../store/api-actions';
-import { getNameSelector, getSearchResultSelector } from '../../../store/main/selectors';
+import { appRouteToProduct } from '../../../services/utils';
+import { fetchSearchResultAction } from '../../../store/api-actions';
+import { getSearchResultSelector } from '../../../store/selectors';
 
 function Search() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const name = useSelector(getNameSelector);
   const items = useSelector(getSearchResultSelector);
+  const [mask, setMask] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchSearchResultAction(mask));
+  }, [dispatch, mask]);
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setNameAction(evt.target.value));
-    dispatch(fetchCatalog());
+    setMask(evt.target.value);
   };
 
-  const handleClick = (id: number) => (evt: SyntheticEvent) => {
+  const handleClick = (evt: SyntheticEvent) => {
     evt.preventDefault();
-    history.push(AppRoute.Product.replace(':product_id', id.toString()));
+    const id = (evt.target as HTMLLIElement).dataset.id;
+    if (id) {
+      setMask('');
+      history.push(appRouteToProduct(id));
+    }
   };
 
   return (
@@ -31,20 +37,17 @@ function Search() {
           </svg><span className="visually-hidden">Начать поиск</span>
         </button>
         <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"
-          value={`${name}`}
+          value={mask}
           onChange={handleChange}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul className={`form-search__select-list ${!items.length && 'hidden'} `} style={{zIndex: 1}}>
-
+      <ul className={`form-search__select-list ${!items.length ? 'hidden' : ''} `} style={{zIndex: 1}} onClick={handleClick}>
         {items.map((item) => (
-          <li key={item.id} className="form-search__select-item" tabIndex={0} onClick={handleClick(item.id)}>
+          <li key={item.id} className="form-search__select-item" tabIndex={0} data-id={item.id} >
             {item.name}
           </li>
         ))}
-
-
       </ul>
     </div>
   );
