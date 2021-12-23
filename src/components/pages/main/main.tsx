@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../const';
 import { fetchCatalogAction } from '../../../store/api-actions';
-import { getCatalogSelector, getIsWaitingSelector } from '../../../store/selectors';
+import {
+  getCatalogSelector,
+  getIsRefreshNeededSelector,
+  getIsWaitingSelector
+} from '../../../store/selectors';
 import Waiting from '../../common/waiting/waiting';
 import Card from './card';
 import Filter from './filter';
@@ -14,11 +18,13 @@ function Main() {
   const dispatch = useDispatch();
 
   const products = useSelector(getCatalogSelector);
+  const isRefreshNeeded = useSelector(getIsRefreshNeededSelector);
+
   const isWaiting = useSelector(getIsWaitingSelector);
 
   useEffect(() => {
     dispatch(fetchCatalogAction());
-  }, [dispatch]);
+  }, [dispatch, isRefreshNeeded ]);
 
   return (
     <main className="page-content">

@@ -46,13 +46,13 @@ export enum GuitarStringsParam {
   Twelve = 12
 }
 
-export enum SortingParam {
+export enum SortingType {
   Unset = '',
   Price = 'price',
   Rating = 'rating',
 }
 
-export enum DirectionParam {
+export enum SortingDirection {
   Unset = '',
   Asc = 'asc',
   Desc = 'desc'

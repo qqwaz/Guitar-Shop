@@ -1,7 +1,6 @@
 import { ApiMessage, APIRoute, AppRoute, QueryParam } from '../const';
-// import { NameSpace } from './root-reducer';
+import { NameSpace } from './root-reducer';
 import { GuitarType } from '../types/guitar-type';
-// import { ParamsType } from '../types/params-type';
 import {
   loadCatalogAction,
   loadProductAction,
@@ -39,15 +38,23 @@ export const fetchSearchResultAction = (mask: string): ThunkActionResult =>
 export const fetchCatalogAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      // const state = _getState();
-      const params = {
-        // type: state[NameSpace.Main].type,
-        // strings: state[NameSpace.Main].strings[0],
-        // sorting: state[NameSpace.Main].sorting[0],
-        // direction: state[NameSpace.Main].direction[0],
-        // minPrice: 0,
-        // maxPrice: 0,
-      };
+      const state = _getState();
+
+      const params: {[k: string]: string} = {};
+
+      if (state[NameSpace.Catalog].sortingType) {
+        params[QueryParam.Sorting] = state[NameSpace.Catalog].sortingType;
+      }
+      if (state[NameSpace.Catalog].sortingDirection) {
+        params[QueryParam.Direction] = state[NameSpace.Catalog].sortingDirection;
+      }
+
+      // type: state[NameSpace.Main].type,
+      // strings: state[NameSpace.Main].strings[0],
+      // sorting: state[NameSpace.Main].sorting[0],
+      // direction: state[NameSpace.Main].direction[0],
+      // minPrice: 0,
+      // maxPrice: 0,
 
       // eslint-disable-next-line no-console
       console.warn(params);
