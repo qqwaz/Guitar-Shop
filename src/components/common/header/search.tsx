@@ -1,6 +1,7 @@
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import useDebounce from '../../../hooks/useDebounce';
 import { appRouteToProduct } from '../../../services/utils';
 import { fetchSearchResultAction } from '../../../store/api-actions';
 import { getSearchResultSelector } from '../../../store/selectors';
@@ -10,10 +11,11 @@ function Search() {
   const dispatch = useDispatch();
   const items = useSelector(getSearchResultSelector);
   const [mask, setMask] = useState('');
+  const debouncedMask = useDebounce(mask, 500);
 
   useEffect(() => {
-    dispatch(fetchSearchResultAction(mask));
-  }, [dispatch, mask]);
+    dispatch(fetchSearchResultAction(debouncedMask));
+  }, [dispatch, debouncedMask]);
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setMask(evt.target.value);
