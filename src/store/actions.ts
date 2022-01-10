@@ -3,9 +3,9 @@ import { ThunkAction } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 import { Action } from 'redux';
 import { RootState } from './root-reducer';
-import { GuitarType } from '../types/guitar-type';
+import { ProductType } from '../types/product-type';
 import { SearchItemType } from '../types/search-item-type';
-import { SortingDirection, SortingType } from '../const';
+import { FilterGuitarStrings, FilterGuitarType, SortingDirection, SortingType } from '../const';
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, RootState, AxiosInstance, Action>;
 
@@ -16,6 +16,12 @@ export enum ActionType {
   LoadProduct = 'LoadProduct',
   SetSortingType = 'SetSortingType',
   SetSortingDirection = 'SetSortingDirection',
+  SetFilterMinPrice = 'SetFilterMinPrice',
+  SetFilterMaxPrice = 'SetFilterMaxPrice',
+  SetPriceBoundsAction = 'SetPriceBoundsAction',
+  SetTotalCount = 'SetTotalCount',
+  UpdateFilterType = 'UpdateFilterType',
+  UpdateFilterStrings = 'UpdateFilterStrings',
 }
 
 export const waitServerAction = createAction(
@@ -34,14 +40,14 @@ export const loadSearchResultAction = createAction(
 
 export const loadCatalogAction = createAction(
   ActionType.LoadCatalog,
-  (products: GuitarType[]) => ({
+  (products: ProductType[]) => ({
     payload: products,
   }),
 );
 
 export const loadProductAction = createAction(
   ActionType.LoadProduct,
-  (product: GuitarType) => ({
+  (product: ProductType) => ({
     payload: product,
   }),
 );
@@ -59,4 +65,47 @@ export const setSortingDirectionAction = createAction(
     payload: direction,
   }),
 );
+
+export const setFilterMinPriceAction = createAction(
+  ActionType.SetFilterMinPrice,
+  (value: string) => ({
+    payload: value,
+  }),
+);
+
+export const setFilterMaxPriceAction = createAction(
+  ActionType.SetFilterMaxPrice,
+  (value: string) => ({
+    payload: value,
+  }),
+);
+
+export const setPriceBoundsAction = createAction(
+  ActionType.SetPriceBoundsAction,
+  (value: [number, number]) => ({
+    payload: value,
+  }),
+);
+
+export const setTotalCountAction = createAction(
+  ActionType.SetTotalCount,
+  (count: number) => ({
+    payload: count,
+  }),
+);
+
+export const updateFilterTypeAction = createAction(
+  ActionType.UpdateFilterType,
+  (type: FilterGuitarType) => ({
+    payload: type,
+  }),
+);
+
+export const updateFilterStringsAction = createAction(
+  ActionType.UpdateFilterStrings,
+  (strings: FilterGuitarStrings) => ({
+    payload: strings,
+  }),
+);
+
 

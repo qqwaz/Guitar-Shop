@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { AppRoute } from '../../../const';
+import { AppRoute, RatingComponentVariant } from '../../../const';
 import { formatPrice } from '../../../services/utils';
 import { fetchProductAction } from '../../../store/api-actions';
 import { getIsWaitingSelector, getProductSelector } from '../../../store/selectors';
-import RatingProduct from '../../common/rating/rating--product';
+import Rating from '../../common/rating/rating';
 import Waiting from '../../common/waiting/waiting';
 import Review from './review';
 
@@ -42,7 +42,7 @@ function Product() {
                 <img className="product-container__img" src={product.previewImg} width="90" height="235" alt={product.name} />
                 <div className="product-container__info-wrapper">
                   <h2 className="product-container__title title title--big title--uppercase">{product.name}</h2>
-                  <RatingProduct />
+                  <Rating variant={RatingComponentVariant.Product} rating={product.rating} />
                   <div className="tabs">
                     <a className="button button--medium tabs__button" href="#characteristics">Характеристики</a>
                     <a className="button button--black-border button--medium tabs__button" href="#description">Описание</a>

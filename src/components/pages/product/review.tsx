@@ -1,4 +1,5 @@
-import RatingComment from '../../common/rating/rating--comment';
+import Rating from '../../common/rating/rating';
+import { RatingComponentVariant } from '../../../const';
 
 function Review() {
   return (
@@ -7,7 +8,7 @@ function Review() {
         <h4 className="review__title review__title--author title title--lesser">Иванов Максим</h4>
         <span className="review__date">12 декабря</span>
       </div>
-      <RatingComment />
+      <Rating variant={RatingComponentVariant.Comment} rating={0} />
       <h4 className="review__title title title--lesser">Достоинства:</h4>
       <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
       <h4 className="review__title title title--lesser">Недостатки:</h4>

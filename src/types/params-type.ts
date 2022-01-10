@@ -1,9 +1,9 @@
-import { SortingDirection, GuitarStringsParam, GuitarTypeParam, SortingType } from '../const';
+import { SortingDirection, FilterGuitarStrings, FilterGuitarType, SortingType } from '../const';
 
 export type ParamsType = {
   name: string,
-  type: GuitarTypeParam,
-  strings: GuitarStringsParam,
+  type: FilterGuitarType,
+  strings: FilterGuitarStrings,
   sorting: SortingType,
   direction: SortingDirection,
   minPrice: number,

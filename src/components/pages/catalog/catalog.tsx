@@ -14,7 +14,7 @@ import Filter from './filter';
 import Pagination from './pagination';
 import Sorting from './sorting';
 
-function Main() {
+function Catalog() {
   const dispatch = useDispatch();
 
   const products = useSelector(getCatalogSelector);
@@ -55,4 +55,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Catalog;

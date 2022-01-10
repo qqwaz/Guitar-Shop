@@ -7,7 +7,7 @@ function Waiting() {
       <Loader
         type='TailSpin'
         color='#000'
-      />;
+      />
     </div>
   );
 }

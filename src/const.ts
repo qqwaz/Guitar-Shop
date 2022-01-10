@@ -3,6 +3,7 @@ export const REQUEST_TIMEOUT = 3000;
 
 export enum AppRoute {
   Main = '/',
+  Catalog = '/catalog/page_:id',
   Product = '/product/:id',
   Cart = '/cart',
   NotFound = '/oops',
@@ -29,31 +30,74 @@ export enum QueryParam {
   MaxPrice = 'price_lte',
   Sorting = '_sort',
   Direction = '_order',
+  StartFrom = '_start',
+  Limit = '_limit',
+  Embed = '_embed',
 }
 
-export enum GuitarTypeParam {
-  Unset = '',
-  Electric = 'electric',
-  Acoustic = 'acoustic',
-  Ululele = 'ukulele'
+export enum FilterGuitarType {
+  Acoustic = 'Acoustic',
+  Electric = 'Electric',
+  Ukulele = 'Ukulele',
 }
 
-export enum GuitarStringsParam {
-  Unset = '',
-  Four = 4,
-  Six = 6,
-  Seven = 7,
-  Twelve = 12
+export enum FilterGuitarStrings {
+  Four = '4',
+  Six = '6',
+  Seven = '7',
+  Twelve = '12',
 }
+
+export const GuitarProps = {
+  [FilterGuitarType.Acoustic]: {
+    type: 'acoustic',
+    label: 'Акустические гитары',
+    strings: [FilterGuitarStrings.Six, FilterGuitarStrings.Seven, FilterGuitarStrings.Twelve],
+  },
+  [FilterGuitarType.Electric]: {
+    type: 'electric',
+    label: 'Электрогитары',
+    strings: [FilterGuitarStrings.Four, FilterGuitarStrings.Six, FilterGuitarStrings.Seven],
+  },
+  [FilterGuitarType.Ukulele]: {
+    type: 'ukulele',
+    label: 'Укулеле',
+    strings: [FilterGuitarStrings.Four],
+  },
+} as const;
 
 export enum SortingType {
-  Unset = '',
+  Undefined = '',
   Price = 'price',
   Rating = 'rating',
 }
 
 export enum SortingDirection {
-  Unset = '',
+  Undefined = '',
   Asc = 'asc',
   Desc = 'desc'
 }
+
+export enum EmbedParam {
+  Undefined = '',
+  Comments = 'comments',
+}
+
+export enum PriceBoundsParam {
+  Cheapest = '?_sort=price&_start=0&_limit=1',
+  Expensive = '?_sort=price&_order=desc&_start=0&_limit=1',
+}
+
+export enum ResponseHeader {
+  XTotalCount = 'x-total-count',
+}
+
+export enum RatingComponentVariant {
+  Card,
+  Product,
+  Comment,
+}
+
+export const MAX_RATING_VALUE = 5;
+export const MAX_PRODUCTS_PER_PAGE = 9;
+export const DEFAULT_CATALOG_PAGE = 1;

@@ -1,5 +1,6 @@
+import { CommentType } from './comment-type';
 
-export type GuitarType = {
+export type ProductType = {
   id: number;
   name: string;
   vendorCode: string;
@@ -8,5 +9,6 @@ export type GuitarType = {
   previewImg: string;
   stringCount: number;
   rating: number;
+  comments: CommentType[];
   price: number;
 };

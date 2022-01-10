@@ -9,30 +9,18 @@ function Sorting() {
   const sortingDirection = useSelector(getSortingDirectionSelector);
 
   const handlePriceClick = () => {
-    if (sortingDirection === SortingDirection.Unset) {
-      dispatch(setSortingDirectionAction(SortingDirection.Asc));
-    }
     dispatch(setSortingTypeAction(SortingType.Price));
   };
 
   const handleRatingClick = () => {
-    if (sortingDirection === SortingDirection.Unset) {
-      dispatch(setSortingDirectionAction(SortingDirection.Asc));
-    }
     dispatch(setSortingTypeAction(SortingType.Rating));
   };
 
   const handleAscClick = () => {
-    if (sortingType === SortingType.Unset) {
-      dispatch(setSortingTypeAction(SortingType.Price));
-    }
     dispatch(setSortingDirectionAction(SortingDirection.Asc));
   };
 
   const handleDescClick = () => {
-    if (sortingType === SortingType.Unset) {
-      dispatch(setSortingTypeAction(SortingType.Price));
-    }
     dispatch(setSortingDirectionAction(SortingDirection.Desc));
   };
 

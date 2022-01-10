@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { GuitarType } from '../../types/guitar-type';
+import { ProductType } from '../../types/product-type';
 import { loadProductAction } from '../actions';
 
 export type ProductStateType = {
-  product: GuitarType | undefined,
+  product: ProductType | undefined,
 }
 
 const initialState: ProductStateType = {

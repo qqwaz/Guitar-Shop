@@ -11,17 +11,17 @@ function Search() {
   const dispatch = useDispatch();
   const items = useSelector(getSearchResultSelector);
   const [mask, setMask] = useState('');
-  const debouncedMask = useDebounce(mask, 500);
+  const debouncedMask = useDebounce(mask);
 
   useEffect(() => {
     dispatch(fetchSearchResultAction(debouncedMask));
   }, [dispatch, debouncedMask]);
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleMaskInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setMask(evt.target.value);
   };
 
-  const handleClick = (evt: SyntheticEvent) => {
+  const handleResultListClick = (evt: SyntheticEvent) => {
     evt.preventDefault();
     const id = (evt.target as HTMLLIElement).dataset.id;
     if (id) {
@@ -40,11 +40,11 @@ function Search() {
         </button>
         <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"
           value={mask}
-          onChange={handleChange}
+          onChange={handleMaskInputChange}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul className={`form-search__select-list ${!items.length ? 'hidden' : ''} `} style={{zIndex: 1}} onClick={handleClick}>
+      <ul className={`form-search__select-list ${!items.length ? 'hidden' : ''} `} style={{zIndex: 1}} onClick={handleResultListClick}>
         {items.map((item) => (
           <li key={item.id} className="form-search__select-item" tabIndex={0} data-id={item.id} >
             {item.name}

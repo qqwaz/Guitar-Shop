@@ -1,8 +1,10 @@
-import { GuitarType } from '../../../types/guitar-type';
-import RatingCard from '../../common/rating/rating--card';
+import { RatingComponentVariant } from '../../../const';
+import { formatPrice } from '../../../services/utils';
+import { ProductType } from '../../../types/product-type';
+import Rating from '../../common/rating/rating';
 
 type CardProps = {
-  item: GuitarType,
+  item: ProductType,
 }
 
 function Card(props: CardProps) {
@@ -14,11 +16,11 @@ function Card(props: CardProps) {
     <div className="product-card">
       <img src={item.previewImg} width="75" height="190" alt={item.name} />
       <div className="product-card__info">
-        <RatingCard />
+        <Rating variant={RatingComponentVariant.Card} rating={item.rating} comments={item.comments.length} />
         <p className="product-card__title">{item.name}</p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>
-          {item.price}
+          {formatPrice(item.price)}
         </p>
       </div>
       <div className="product-card__buttons">
